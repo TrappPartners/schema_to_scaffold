@@ -50,7 +50,15 @@ module SchemaToScaffold
       end
 
       script = []
-      target = opts[:factory_girl] ? "factory_girl:model" : "scaffold"
+      script_active_admin = []
+      if (opts[:factory_girl])
+        target =  'factory_girl:model'
+      elsif opts[:model]
+        target = 'model'
+      else
+        target = 'scaffold'
+      end
+
       migration_flag = opts[:migration] ? true : false
 
       tables.each do |table_id|
@@ -78,6 +86,7 @@ module SchemaToScaffold
         clipboard: argv.delete('-c'),    # check for clipboard flag
         factory_girl: argv.delete('-f'), # factory_girl instead of scaffold
         migration: argv.delete('-m'),   # generate migrations
+        model: argv.delete('-o'),       # only model
         help: argv.delete('-h'),        # check for help flag
         path: path                      # get path to file(s)
       }

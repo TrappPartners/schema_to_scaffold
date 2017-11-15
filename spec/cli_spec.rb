@@ -92,23 +92,27 @@ module SchemaToScaffold
 
       context "handles arguments" do
         it "help argument" do
-          expect(CLI.parse_arguments(["-h"])).to eq({clipboard: nil, factory_girl: nil, migration: nil, help: "-h", path: nil})
+          expect(CLI.parse_arguments(["-h"])).to eq({clipboard: nil, factory_girl: nil, migration: nil, model: nil, help: "-h", path: nil})
         end
 
         it "path argument" do
-          expect(CLI.parse_arguments(["-p", "/some/path"])).to eq({clipboard: nil, factory_girl: nil, migration: nil, help: nil, path: "/some/path"})
+          expect(CLI.parse_arguments(["-p", "/some/path"])).to eq({clipboard: nil, factory_girl: nil, model: nil, migration: nil, help: nil, path: "/some/path"})
         end
 
         it "clipboard argument" do
-          expect(CLI.parse_arguments(["-c"])).to eq({clipboard: "-c", factory_girl: nil, migration: nil, help: nil, path: nil})
+          expect(CLI.parse_arguments(["-c"])).to eq({clipboard: "-c", factory_girl: nil, model: nil, migration: nil, help: nil, path: nil})
         end
 
         it "factory girl argument" do
-          expect(CLI.parse_arguments(["-f"])).to eq({clipboard: nil, factory_girl: "-f", migration: nil, help: nil, path: nil})
+          expect(CLI.parse_arguments(["-f"])).to eq({clipboard: nil, factory_girl: "-f", model: nil, migration: nil, help: nil, path: nil})
+        end
+
+        it "models only" do
+          expect(CLI.parse_arguments(["-o"])).to eq({clipboard: nil, factory_girl: nil, model: "-o", migration: nil, help: nil, path: nil})
         end
 
         it "migration argument" do
-          expect(CLI.parse_arguments(["-m"])).to eq({clipboard: nil, factory_girl: nil, migration: "-m", help: nil, path: nil})
+          expect(CLI.parse_arguments(["-m"])).to eq({clipboard: nil, factory_girl: nil, model: nil, migration: "-m", help: nil, path: nil})
         end
       end
     end
