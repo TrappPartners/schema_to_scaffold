@@ -63,14 +63,24 @@ module SchemaToScaffold
 
       tables.each do |table_id|
         script << generate_script(schema, table_id, target, migration_flag)
+        script_active_admin << generate_script_active_admin(schema, table_id)
       end
       output = script.join("")
+      output_admin = script_active_admin.join("")
+
+      output += output_admin
       puts "\nScript for #{target}:\n\n"
       puts output
 
       if opts[:clipboard]
         puts("\n(copied to your clipboard)")
         Clipboard.new(output).command
+      else
+        file_name = path + '.generate'
+        puts("\n(#{file_name} was created)")
+        File.open(file_name, "w+") do |f|
+          f.puts(output)
+        end
       end
     end
 
@@ -106,6 +116,12 @@ module SchemaToScaffold
       schema = Schema.new(schema) unless schema.is_a?(Schema)
       return schema.to_script if table.nil?
       schema.table(table).to_script(target, migration_flag)
+    end
+
+    def self.generate_script_active_admin(schema, table=nil)
+      schema = Schema.new(schema) unless schema.is_a?(Schema)
+      return schema.to_script_active_admin if table.nil?
+      schema.table(table).to_script_active_admin
     end
 
   end

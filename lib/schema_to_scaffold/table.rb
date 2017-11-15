@@ -27,6 +27,14 @@ module SchemaToScaffold
       script
     end
 
+    def to_script_active_admin
+      script = []
+      script << "rails generate active_admin:resource #{modelize(name)}"
+      script << "\n\n"
+      script
+    end
+
+
     def self.parse(table_data)
       return unless name = table_data[/table "([^"]+?)"/]
       name = $1
